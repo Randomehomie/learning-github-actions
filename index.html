@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Clicker Game</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            user-select: none;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        #score-board {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4a4a4a;
+            margin-bottom: 20px;
+        }
+
+        /* The game board area */
+        #game-box {
+            width: 500px;
+            height: 400px;
+            background-color: #ffffff;
+            border: 3px solid #333;
+            border-radius: 8px;
+            position: relative;
+            margin: 0 auto;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* The target you need to click */
+        #target {
+            width: 40px;
+            height: 40px;
+            background-color: #ff4757;
+            border-radius: 4px;
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        #start-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #2ed573;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        #start-btn:hover {
+            background-color: #26af5f;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Catch the Square!</h1>
+    <div id="score-board">Score: <span id="score">0</span></div>
+
+    <div id="game-box">
+        <div id="target" style="display: none;"></div>
+    </div>
+
+    <button id="start-btn" onclick="startGame()">Start Game</button>
+
+    <script>
+        let score = 0;
+        let gameActive = false;
+        const scoreDisplay = document.getElementById('score');
+        const target = document.getElementById('target');
+        const gameBox = document.getElementById('game-box');
+        const startBtn = document.getElementById('start-btn');
+
+        // Function to move the target to a random position inside the game box
+        function moveTarget() {
+            if (!gameActive) return;
+
+            // Calculate maximum available space inside the box
+            const maxX = gameBox.clientWidth - target.clientWidth;
+            const maxY = gameBox.clientHeight - target.clientHeight;
+
+            // Generate random coordinates
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            // Apply new coordinates to the target
+            target.style.left = randomX + 'px';
+            target.style.top = randomY + 'px';
+        }
+
+        // When the player clicks the target
+        target.addEventListener('click', () => {
+            if (gameActive) {
+                score++;
+                scoreDisplay.textContent = score;
+                moveTarget(); // Instantly move it to a new spot
+            }
+        });
+
+        // Start (or reset) the game
+        function startGame() {
+            score = 0;
+            scoreDisplay.textContent = score;
+            gameActive = true;
+            target.style.display = 'block';
+            startBtn.textContent = "Restart Game";
+            moveTarget();
+        }
+    </script>
+
+</body>
+</html>
